@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    height: 100dvh;
+}
+
+#root {
+    height: 100dvh;
+}
+
+.owner {
+    flex-direction: row-reverse;
+}
+
+.owner p {
+    background-color: #e9e9e9;
+}
