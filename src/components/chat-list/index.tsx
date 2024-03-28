@@ -7,7 +7,8 @@ import { DocumentData } from "@firebase/firestore-types";
 import { User } from "firebase/auth";
 
 const ChatListComponent: FC = (): JSX.Element => {
-    const [chats, setChats] = useState<DocumentData | undefined>(() => []);
+    const [chats, setChats] = useState<DocumentData | undefined>([]);
+    const [onlineUsers] = useState("");
     const { currentUser } = useContext(AuthContext);
     const { dispatch } = useContext(ChatContext);
 
@@ -33,11 +34,14 @@ const ChatListComponent: FC = (): JSX.Element => {
         .map(chat => {
             return (
                 <div
-                    className="flex items-center gap-2 cursor-pointer hover:bg-gray-300 transition duration-300"
+                    className="relative flex items-center gap-2 cursor-pointer hover:bg-gray-300 transition duration-300"
                     key={chat[0]}
                     onClick={() => handleSelect(chat[1].userInfo)}
                 >
                     <div className="flex justify-center items-center h-14 w-14 rounded-full p-2 bg-white">
+                        {onlineUsers === chat[1].userInfo.uid && (
+                            <div className="w-2 h-2 rounded-full bg-green-600 absolute top-7 right-3" />
+                        )}
                         <img src={chat[1].userInfo.photoURL} alt="" />
                     </div>
                     <div className="">
