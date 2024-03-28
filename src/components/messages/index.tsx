@@ -5,13 +5,14 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../../helpers/firebase";
 import { DocumentData } from "@firebase/firestore-types";
 import { IMessageType } from "../../common/interfaces/chat";
+import { Unsubscribe } from "firebase/auth";
 
 const MessagesComponent: FC = (): JSX.Element => {
     const [messages, setMessages] = useState<DocumentData>([]);
     const { data } = useContext(ChatContext);
 
     useEffect(() => {
-        const unsubscribe = onSnapshot(
+        const unsubscribe: Unsubscribe = onSnapshot(
             doc(db, "chats", data.chatId),
             document => {
                 document.exists() && setMessages(document.data().messages);

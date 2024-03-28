@@ -1,14 +1,10 @@
-import { createContext, ReactNode, useEffect, useState } from "react";
-import { onAuthStateChanged, User } from "firebase/auth";
+import { createContext, useEffect, useState } from "react";
+import { onAuthStateChanged, Unsubscribe, User } from "firebase/auth";
 import { auth } from "../../helpers/firebase";
-
-interface IAuthContextProvider {
-    children: ReactNode;
-}
-
-interface IAuthContextValue {
-    currentUser: User | null;
-}
+import {
+    IAuthContextProvider,
+    IAuthContextValue
+} from "../../common/interfaces/auth";
 
 export const AuthContext = createContext({} as IAuthContextValue);
 
@@ -16,7 +12,7 @@ export const AuthContextProvider = ({ children }: IAuthContextProvider) => {
     const [currentUser, setCurrentUser] = useState<User | null>({} as User);
 
     useEffect(() => {
-        const unsub = onAuthStateChanged(auth, user => {
+        const unsub: Unsubscribe = onAuthStateChanged(auth, user => {
             setCurrentUser(user);
         });
 

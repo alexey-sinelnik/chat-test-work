@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthImageBlockComponent from "../../components/auth-image-block";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { UserCredential, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../helpers/firebase";
 import Cookies from "js-cookie";
 
@@ -13,7 +13,7 @@ const SignInPage = () => {
     const handleSubmit = (e: { preventDefault: () => void }) => {
         e.preventDefault();
         signInWithEmailAndPassword(auth, email, password)
-            .then(userCredential => {
+            .then((userCredential: UserCredential) => {
                 const user: any = userCredential.user;
                 Cookies.set("token", user.accessToken);
                 navigate("/");

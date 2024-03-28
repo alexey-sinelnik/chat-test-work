@@ -3,7 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
 import { auth, db, storage } from "../../helpers/firebase";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import {
+    ref,
+    uploadBytesResumable,
+    getDownloadURL,
+    StorageReference
+} from "firebase/storage";
 import AuthImageBlockComponent from "../../components/auth-image-block";
 import Cookies from "js-cookie";
 
@@ -29,11 +34,14 @@ const SignUpPage = () => {
 
             Cookies.set("token", response.user.accessToken);
 
-            const date = new Date().getTime();
-            const storageRef = ref(storage, `${displayName + date}`);
+            const date: number = new Date().getTime();
+            const storageRef: StorageReference = ref(
+                storage,
+                `${displayName + date}`
+            );
 
             await uploadBytesResumable(storageRef, file).then(() => {
-                getDownloadURL(storageRef).then(async downloadURL => {
+                getDownloadURL(storageRef).then(async (downloadURL: string) => {
                     try {
                         await updateProfile(response.user, {
                             displayName,

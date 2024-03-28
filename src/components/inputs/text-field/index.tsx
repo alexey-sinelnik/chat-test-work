@@ -12,7 +12,9 @@ import {
 import { db, storage } from "../../../helpers/firebase";
 import { v4 as uuid } from "uuid";
 import {
+    StorageReference,
     TaskEvent,
+    UploadTask,
     getDownloadURL,
     ref,
     uploadBytesResumable
@@ -29,13 +31,16 @@ const TextFieldComponent: FC = (): JSX.Element => {
         e.preventDefault();
         if (!text) return;
         if (img) {
-            const storageRef = ref(storage, uuid());
+            const storageRef: StorageReference = ref(storage, uuid());
 
-            const uploadTask = uploadBytesResumable(storageRef, img);
+            const uploadTask: UploadTask = uploadBytesResumable(
+                storageRef,
+                img
+            );
 
             uploadTask.on("error" as TaskEvent, () => {
                 getDownloadURL(uploadTask.snapshot.ref).then(
-                    async downloadURL => {
+                    async (downloadURL: string) => {
                         await updateDoc(doc(db, "chats", data.chatId), {
                             messages: arrayUnion({
                                 id: uuid(),

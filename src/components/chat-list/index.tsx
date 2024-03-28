@@ -4,7 +4,7 @@ import { db } from "../../helpers/firebase";
 import { AuthContext } from "../../context/auth";
 import { ChatContext } from "../../context/chat";
 import { DocumentData } from "@firebase/firestore-types";
-import { User } from "firebase/auth";
+import { Unsubscribe, User } from "firebase/auth";
 
 const ChatListComponent: FC = (): JSX.Element => {
     const [chats, setChats] = useState<DocumentData | undefined>([]);
@@ -14,7 +14,7 @@ const ChatListComponent: FC = (): JSX.Element => {
 
     useEffect(() => {
         const getUserChats = () => {
-            const unsubscribe = onSnapshot(
+            const unsubscribe: Unsubscribe = onSnapshot(
                 doc(db, "userChats", currentUser ? currentUser.uid : ""),
                 document => {
                     setChats(document.data());
@@ -25,7 +25,7 @@ const ChatListComponent: FC = (): JSX.Element => {
         currentUser && currentUser.uid && getUserChats();
     }, [currentUser]);
 
-    const handleSelect = (user: User) => {
+    const handleSelect = (user: User): void => {
         dispatch({ type: "CHANGE_USER", payload: user });
     };
 

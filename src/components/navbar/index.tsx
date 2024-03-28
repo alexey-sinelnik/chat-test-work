@@ -1,16 +1,16 @@
 import { FC, JSX } from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "../../helpers/firebase";
-import { useNavigate } from "react-router-dom";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
 import { IoExit } from "react-icons/io5";
 import { FcBusinessman } from "react-icons/fc";
 
 const NavbarComponent: FC = (): JSX.Element => {
-    const navigate = useNavigate();
+    const navigate: NavigateFunction = useNavigate();
 
-    const handleLogout = () => {
+    const handleLogout = (): void => {
         signOut(auth)
             .then(() => {
                 Cookies.remove("token");
